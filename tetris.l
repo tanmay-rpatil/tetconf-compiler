@@ -15,7 +15,7 @@ pieces 						{ return(PCS); }
 
 [ \t]+ 						{  }
 \n 							{ return(EOL); }
-"//" 						{ return(COMMENT); }
+"//".* 						{ return(COMMENT); }
 
 /* data types */
 [0-9]+ 						{ yylval = atoi(yytext); return(NUM); }
