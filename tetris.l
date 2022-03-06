@@ -19,7 +19,7 @@ pieces 						{ return(PCS); }
 
 /* data types */
 [0-9]+ 						{ yylval = atoi(yytext); return(NUM); }
-\"([0-9]|[A-Za-z]|_)*\" 	{ return(STRING); }
+\"([0-9]|[A-Za-z]|_| |\t)*\" 	{ return(STRING); }
 #([A-Fa-f0-9]{6}) 			{ return(COLOR); }
 
 /* key bindings */

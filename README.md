@@ -1,10 +1,22 @@
 # Tetris
 
+## TADS Language
+The laguage is a declarative language, that spcifies how a tertis game needs to be configured. The TADS compiler will scan and parse a ```.tads``` file which will pick up configuration parameters and generate a pyhton tetris game.
 
+---
 
 ## Offered Primitives
 
-The compiler will scan and parse a ```.tads``` file which will pick up configuration parameters and generate a pyhton tetris game.
+### Strings
+Can only include alphabets (any case), underscores, digits, spaces and tabs.
+
+Strings are enclosed within double quotes ```"``` only.
+
+Example String: 
+
+```
+"A_String 	123"
+```
 
 ### Pieces
 
