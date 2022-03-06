@@ -16,12 +16,12 @@ board (30,40);
 pieces = [{L,#106b7793}, {I,#106b7793}, {O,#106b7793}, {J,#106b7793}, {Z,#106b7793}, {S,#106b7793}, {T,#106b7793}];
 
 //key bindings
-rotate = KEY_UP;
-go_left = KEY_UP;
-go_right = KEY_UP;
-soft_drop = KEY_UP;
-hard_drop = KEY_UP;
-pause = KEY_UP;
+rotate = "K_UP";
+go_left = "K_UP";
+go_right = "K_UP";
+soft_drop = "K_UP";
+hard_drop = "K_UP";
+pause = "K_UP";
 
 // toggles
 ghost = 0;
@@ -31,4 +31,4 @@ sound = 0;
 difficulty = ez;
 
 // scoring array : each entry is score for 0 to 4 lines cleared
-scoring = [0, 40, 100, 300, 1200, 5000]
+scoring = [0, 40, 100, 300, 1200, 5000];
