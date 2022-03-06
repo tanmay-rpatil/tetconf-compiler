@@ -16,7 +16,7 @@ board (30,40);
 pieces = [{L,#106b7793}, {I,#106b7793}, {O,#106b7793}, {J,#106b7793}, {Z,#106b7793}, {S,#106b7793}, {T,#106b7793}];
 
 //key bindings
-rotate_left = KEY_UP;
+rotate = KEY_UP;
 go_left = KEY_UP;
 go_right = KEY_UP;
 soft_drop = KEY_UP;
