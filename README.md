@@ -1,7 +1,7 @@
 # Tetris
 
 ## TADS Language
-The laguage is a declarative language, that spcifies how a tertis game needs to be configured. The TADS compiler will scan and parse a ```.tads``` file which will pick up configuration parameters and generate a pyhton tetris game.
+The language is a declarative language, that specifies how a tetris game needs to be configured. The TADS compiler will scan and parse a ```.tads``` file which will pick up configuration parameters and generate a python tetris game.
 
 ---
 ---
@@ -116,7 +116,7 @@ ghost = 0; //in-line comment
 
 ### Arrays
 
-Arrays are used to specify tetromino types avaiable in-game, and for specifying scoring levels.
+Arrays are used to specify tetromino types available in-game, and for specifying scoring levels.
 
 For example, 
 ```
