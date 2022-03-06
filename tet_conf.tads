@@ -1,0 +1,34 @@
+// 
+//  _____ ___ ______  _____   _____ _____ ___________ _____ _____ 
+// |_   _/ _ \|  _  \/  ___| |_   _|  ___|_   _| ___ \_   _/  ___|
+//   | |/ /_\ \ | | |\ `--.    | | | |__   | | | |_/ / | | \ `--. 
+//   | ||  _  | | | | `--. \   | | |  __|  | | |    /  | |  `--. \
+//   | || | | | |/ / /\__/ /   | | | |___  | | | |\ \ _| |_/\__/ /
+//   \_/\_| |_/___/  \____/    \_/ \____/  \_/ \_| \_|\___/\____/ 
+//                                                                
+//
+
+//board specs
+board (30,40);
+
+// pieces list should be defined where each element is a pair {shape,color}. 
+// If color is not specified, default color shall be selected.
+pieces = [{L,#106b7793}, {I,#106b7793}, {O,#106b7793}, {J,#106b7793}, {Z,#106b7793}, {S,#106b7793}, {T,#106b7793}];
+
+//key bindings
+rotate_left = KEY_UP;
+go_left = KEY_UP;
+go_right = KEY_UP;
+soft_drop = KEY_UP;
+hard_drop = KEY_UP;
+pause = KEY_UP;
+
+// toggles
+ghost = 0;
+sound = 0;
+
+// Difficulty levels: noob, ez, god
+difficulty = ez;
+
+// scoring array : each entry is score for 0 to 4 lines cleared
+scoring = [0, 40, 100, 300, 1200, 5000]
