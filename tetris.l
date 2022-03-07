@@ -1,62 +1,47 @@
-%{
-	#include "calc.tab.h"
-	int yylval;
-%}
+# tetlexer.py
 
-%%
+from sly import Lexer
 
-/* board dimsensions */
-board						{ return(DIMS); }
+class tetLexer(Lexer):
+    # Set of token names
+    tokens = {EOS, COMMA, NUM, STR, BOOL, COMMENT, EOL, DIMS, SOUND, PCS, K_KEY, SPEED, BIAS, DISCO, GHOST, SCORE, OPEN_ROUND, CLOSE_ROUND, OPEN_CURLY, CLOSE_CURLY, OPEN_SQUARE, CLOSE_SQUARE, PLUS, MINUS, MULT, DIVI, ASSIGN, LT, GT, LE, GE, NE}
 
-/* messages */
-opening_msg 				{ return(WELCOME); }
-ending_msg 					{ return(GAMEOVER); }
-pieces 						{ return(PCS); }
+    # String containing ignored characters between tokens
+    ignore = ' \t'
 
-[ \t]+ 						{  }
-\n 							{ return(EOL); }
-"//".* 						{ return(COMMENT); }
-
-/* data types */
-[0-9]+ 						{ yylval = atoi(yytext); return(NUM); }
-\"([0-9]|[A-Za-z]|_| |\t)*\" 	{ return(STRING); }
-#([A-Fa-f0-9]{6}) 			{ return(COLOR); }
-@[A-Za-z_][A-Za-z_0-9]*@	{ return(MACRO); }
-
-/* key bindings */
-rotate_left 				{ return(ROTATE); }
-go_left 					{ yylval = LEFT; return(MOVE); }
-go_right 					{ yylval = RIGHT; return(MOVE); }
-soft_drop 					{ yylval = SOFT; return(DROP); }
-hard_drop 					{ yylval = HARD; return(DROP); }
-pause 						{ return(PAUSE); }
-
-/* Toggles */
-ghost 						{ return(GHOST); }
-sound 						{ return(SOUND); }
-difficulty 					{ return(DIFFICULTY); }
-scoring 					{ return(SCORING); }
-
-/* Brackets */
-"("  						{ return OPEN_ROUND; }
-")"  						{ return CLOSE_ROUND; }
-"["  						{ return OPEN_SQUARE; }
-"]"  						{ return CLOSE_SQUARE; }
-"{"  						{ return OPEN_CURLY; }
-"}"  						{ return CLOSE_CURLY; }
-
-/* Arithmetic operators */
-"+"  						{ yylval = ADD; return = (ARITH); }
-"-"  						{ yylval = SUB; return = (ARITH); }
-"*"  						{ yylval = MUL; return = (ARITH); }
-"/"  						{ yylval = DIV; return = (ARITH); }
-
-/* Relational operators */
-"<" 						{ yylval = LT; return = (RELOP); }
-">" 						{ yylval = GT; return = (RELOP); }
-"=" 						{ yylval = EQ; return = (RELOP); }
-"<="						{ yylval = LE; return = (RELOP); }
-">="						{ yylval = GE; return = (RELOP); }
-"<>"						{ yylval = NE; return = (RELOP); }
-
-%%
+    # Regular expression rules for tokens
+    EOS = r';'
+    COMMA = r','
+    NUM = r'[0-9]+'
+    STR = r'\"[0-9A-Za-z_ \t]\"'
+    BOOL = r'(ON|OFF)'
+    COMMENT = r'//[.]*'
+    EOL = r'\n'
+    DIMS = r'board'
+    SOUND = r'sound'
+    PCS = r'pieces'
+    K_KEY = r'(rotate|go_left|go_right|soft_drop|hard_drop|pause)'
+    SPEED = r'speed'
+    BIAS = r'pga_bias'
+    DISCO = r'disco_mode'
+    GHOST = r'ghost_mode'
+    SCORE = r'scoring'
+    WELCOME = r'opening_msg'
+    GAMEOVER = r'ending_msg'
+    OPEN_ROUND = r'\('
+    CLOSE_ROUND = r'\)'
+    OPEN_CURLY = r'\{'
+    CLOSE_CURLY = r'\}'
+    OPEN_SQUARE = r'\['
+    CLOSE_SQUARE = r'\]'
+    PLUS = r'\+'
+    MINUS = r'-'
+    MULT = r'\*'
+    DIVI = r'/'
+    ASSIGN = r'='
+    LE = r'<='
+    GE = r'>='
+    LT = r'<'
+    GT = r'>'
+    NE = r'<>'
+    
