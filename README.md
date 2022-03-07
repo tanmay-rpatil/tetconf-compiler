@@ -59,7 +59,7 @@ The TADS language is a declarative language, that specifies how a tetris game ne
   **ON** represents _true_, and **OFF** represents _false_
   Syntax example:
 
-
+git 
   ```
   ghost = ON;
   ```
@@ -242,8 +242,9 @@ The TADS language is a declarative language, that specifies how a tetris game ne
 1. To scan each type of statement separately with a few edgecases.
 2. To scan a sample `.tads` file and then check tokenisation.
 
----
+Testcases are defined in `/tests/scanner_test_cases.md`
 
+---
 ---
 
 ## Division of Labour between Scanner and Parser
