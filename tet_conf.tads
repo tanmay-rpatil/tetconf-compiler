@@ -23,16 +23,18 @@ soft_drop = "K_UP";
 hard_drop = "K_UP";
 pause = "K_UP";
 
-// toggles
-ghost = 0;
-sound = 0;
-disco_mode = 0; //epilepsy trigger warning!
-
 // Difficulty settings
+
 // Speed lvs: noob, ez, god
 speed = ez;
-// Pieces generation algo 0 => bias off i.e random,  1=>bias on
-bias = 0; 
+// Pieces generation algo: 0 => bias off i.e random,  1=>bias on
+bias = 0;
+// Random flashing colors: 0 => static, 1 => flashing
+disco_mode = 0; //epilepsy trigger warning!
+
+// Additional settings
+ghost = @ON@;
+sound = 0;
 
 // scoring array : each entry is score for 0 to 4 lines cleared
 scoring = [0, 40, 100, 300, 1200, 5000];

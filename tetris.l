@@ -21,6 +21,7 @@ pieces 						{ return(PCS); }
 [0-9]+ 						{ yylval = atoi(yytext); return(NUM); }
 \"([0-9]|[A-Za-z]|_| |\t)*\" 	{ return(STRING); }
 #([A-Fa-f0-9]{6}) 			{ return(COLOR); }
+@[A-Za-z_][A-Za-z_0-9]*@	{ return(MACRO); }
 
 /* key bindings */
 rotate_left 				{ return(ROTATE); }
