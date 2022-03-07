@@ -9,7 +9,9 @@
 //
 
 //board specs
-board (30,40);
+board = [30,40];
+// sound
+sound = ON;
 
 // pieces list should be defined where each element is a pair {shape,color}. 
 // If color is not specified, default color shall be selected.
@@ -17,24 +19,25 @@ pieces = [{"L",#106b7793}, {"I",#106b7793}, {"O",#106b7793}, {"J",#106b7793}, {"
 
 //key bindings
 rotate = "K_UP";
-go_left = "K_UP";
-go_right = "K_UP";
-soft_drop = "K_UP";
-hard_drop = "K_UP";
-pause = "K_UP";
+go_left = "K_LEFT";
+go_right = "K_RIGHT";
+soft_drop = "K_DOWN";
+hard_drop = "K_SPACE";
+pause = "K_p";
 
 // Difficulty settings
 
 // Speed lvs: noob, ez, god
 speed = ez;
 // Pieces generation algo: 0 => bias off i.e random,  1=>bias on
-bias = 0;
+bias = OFF;
 // Random flashing colors: 0 => static, 1 => flashing
-disco_mode = 0; //epilepsy trigger warning!
-
-// Additional settings
-ghost = @ON@;
-sound = 0;
+disco_mode = OFF; //epilepsy trigger warning!
+// Ghost piece is the predicted position of the block in motion if it is dropped in its current column
+ghost = ON;
 
 // scoring array : each entry is score for 0 to 4 lines cleared
-scoring = [0, 40, 100, 300, 1200, 5000];
+scoring = [0, 40, 100, 300, 1200];
+
+opening_msg = "Welcome! Press any key to begin.";
+closing_msg = "Game over!";
