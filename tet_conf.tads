@@ -7,7 +7,7 @@
 //   \_/\_| |_/___/  \____/    \_/ \____/  \_/ \_| \_|\___/\____/ 
 //                                                                
 //
-
+[]
 
 board = [30,40];
 sound = ON;
@@ -22,11 +22,11 @@ hard_drop = "K_SPACE";
 pause = "K_p";
 
 // Difficulty settings
-speed = ez;
-bias = OFF;
+speed = 1;
+pga_bias = OFF;
 disco_mode = OFF; //epilepsy trigger warning!
-ghost = ON;
+ghost_mode = ON;
 scoring = [0, 40, 100, 300, 1200];
 
 opening_msg = "Welcome! Press any key to begin.";
-closing_msg = "Game over!";
+ending_msg = "Game over!";

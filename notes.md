@@ -21,3 +21,4 @@
     ```
     ghost = $ON$; //"$ON$" is replaced with "1" by the parser.
     ```
+- Update readme with changes according to change of rules
