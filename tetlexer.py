@@ -34,15 +34,37 @@ class tetLexer(Lexer):
     ASSIGN = r'='
     RELOP = r'(<=|>=|<|>|<>)'
     COLOR = r'#([0-9a-fA-F]{6})'
+ 
+    def count(self):
+        for token in self.tokens:
+            print((token))
     
 if __name__ == '__main__':
     i = 1
-    with open('tet_conf.tads', 'r') as fileh:
-        
-        lines = fileh.readlines()
-        lexer = tetLexer()
-        for data in lines:
-            print("Line #",i)
-            for tok in lexer.tokenize(data):
-                print('\tt<%r>,%r' % (tok.type, tok.value))
-            i+=1
+ 
+    lexer = tetLexer()
+
+    """
+    Lengths of lexemes:
+        Fixed length:
+            * EOS, COMMA, EOL, OPEN_BRACKET, CLOSE_BRACKET, ARITHOP, ASSIGN .. 1 each
+            * DIMS, SOUND, SPEED ............................................. 5 each
+            * PCS ............................................................ 6
+            * COLOR, SCORING ................................................. 7 each
+            * PGA_BIAS ....................................................... 8
+            * DISCO_MODE, GHOST_MODE, ENDING_MSG ............................. 10 each
+            * OPENING_MSG .................................................... 11
+        Variable length:
+            * NUM ............................................................ >=1
+            * STR ............................................................ >=2
+            * BOOL ........................................................... 2 (ON) or 3 (OFF)
+            * COMMENT ........................................................ >=2
+            * K_KEY .......................................................... depends on the value
+            * RELOP .......................................................... 1 (<, >) or 2 (<=, >=, <>)
+
+    """
+    print("Number of tokens = ", len(lexer.tokens))                          # Ans. 24
+    print("Number of ignore tokens = ", len(lexer.ignore))                   # Ans. 2
+    print("Number of patterns = ", len(lexer.tokens) + len(lexer.ignore))    # Ans. 26
+    print("Number of tokens encoded as enumerated types or numbers = none")  # Ans. 0
+    print("Number of unique lexemes = 14")                                   # Ans. 14 [EOS, COMMA, EOL, DIMS, SOUND, PCS, SPEED, PGA_BIAS, DISCO_MODE, GHOST_MODE, SCORING, OPENING_MSG, CLOSING_MSG, ASSIGN]
