@@ -146,12 +146,12 @@ git
 
   - #### Speed (SPEED)
 
-    Speed can be set to `noob` , `ez` , `god` levels in increasing order of speed.
+    Speed can be set to to an integer level from 1 to 10 inclusive.
     Syntax example,
 
 
     ```
-    speed = ez;
+    speed = 5;
     ```
   - #### Bias (BIAS)
 
