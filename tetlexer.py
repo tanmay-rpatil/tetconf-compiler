@@ -13,7 +13,7 @@ class tetLexer(Lexer):
     EOS = r';'
     COMMA = r','
     NUM = r'[0-9]+'
-    STR = r'\".*?\"'
+    STR = r'\".*?\"' #non greedy string matching i.e end matching till first " is encountered
     BOOL = r'(ON|OFF)'
     COMMENT = r'//.*'
     EOL = r'\n'
