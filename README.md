@@ -39,12 +39,17 @@
 ---
 
 ### Test Cases
-
+Test cases for parser are mentioned in `./tests/parser_test_cases.md` file. Details of the reasons and Input/Outputs for the same. 
 ---
 
-### MAKE File
-python tetparser.py
+### Makefile
+In order to compile a `.tads` file, execute the following command:
 
+```bash
+$ make file=tetconf.tads
+```
+
+This will interpret the `.tads` file and start the executable tetris game.
 ---
 ---
 
