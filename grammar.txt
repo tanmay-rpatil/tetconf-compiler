@@ -1,7 +1,8 @@
-expr_list       : expr_list expr
-                | expr
+expr_list       : expr_list expr | expr
 
-expr            : assign_expr EOS | EOL
+________________________________________________________________________________________________
+
+expr            : assign_expr EOS | EOL | COMMENT
 
 ________________________________________________________________________________________________
 
@@ -21,22 +22,31 @@ num_var         : SPEED
 
 ________________________________________________________________________________________________
 
-str_assign      : str_var ASSIGN STR
+str_assign      : str_var ASSIGN string
 
 str_var         : K_KEY | OPENING_MSG | ENDING_MSG
+
+string          : STR
 
 ________________________________________________________________________________________________
 
 array_assign    : pieces_set | board_set | scoring_set
 
-board_set       : DIMS ASSIGN OPEN_BRACKET number_list CLOSE_BRACKET
+board_set       : DIMS ASSIGN object_array
 
-scoring_set     : SCORING ASSIGN OPEN_BRACKET number_list CLOSE_BRACKET
+scoring_set     : SCORING ASSIGN object_array
 
-number_list     : number_list COMMA NUM | NUM
+pieces_set      : PCS ASSIGN object_array
 
-pieces_set      : PCS ASSIGN OPEN_BRACKET piece_list CLOSE_BRACKET
+object_array    : OPEN_BRACKET object_list CLOSE_BRACKET 
+                | OPEN_BRACKET CLOSE_BRACKET
 
-piece_list      : piece_list COMMA tuple | tuple
+object_list     : number_list | piece_list
 
-tuple           : OPEN_BRACKET STR COMMA COLOR CLOSE_BRACKET
+number_list     : number_list COMMA NUM 
+                | NUM
+
+piece_list      : piece_list COMMA tupple 
+                | tupple
+
+tupple          : OPEN_BRACKET STR COMMA COLOR CLOSE_BRACKET
