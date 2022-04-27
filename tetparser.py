@@ -86,9 +86,9 @@ class tetParser(Parser):
 
 	########################
 
-	@_('str_var ASSIGN STR')
+	@_('str_var ASSIGN string')
 	def str_assign(self,p):
-		self.data_map[p.str_var] = p.STR
+		self.data_map[p.str_var] = p.string
 		print("str_var: ", p.str_var)
 		return p
 
@@ -160,7 +160,7 @@ class tetParser(Parser):
 	def piece_list(self,p):
 		return [p.tuples]
 
-	@_('OPEN_BRACKET STR COMMA COLOR CLOSE_BRACKET')
+	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
 		color_hex = str(p.COLOR)
 		color_hex_int = []
@@ -175,20 +175,25 @@ class tetParser(Parser):
 		color = (color_hex_int[0]*16 + color_hex_int[1],
 					color_hex_int[2]*16 + color_hex_int[3],
 					color_hex_int[4]*16 + color_hex_int[5])
-		return (p.STR, color)
+		return (p.string, color)
 
+	@_('STR')
+	def string(self,p):
+		return (p.STR[1:-1])
 
 if __name__ == '__main__':
 	lexer = tetLexer()
 	parser = tetParser()
- 
-	# while True:
-	
- 
+
 	with open('tet_conf.tads', 'r') as fileh:
 		lines = fileh.readlines()
+		line_count = 1;
 		for line in lines:
-			result = parser.parse(lexer.tokenize(line))
+			try:
+				result = parser.parse(lexer.tokenize(line))
+			except:
+				print("Syntax error in line #",line_count,":",line, "skipping this line")
+			line_count+=1
 		# print(result)
 		print(parser.data_map)
 				
