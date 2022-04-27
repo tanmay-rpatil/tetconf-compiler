@@ -1,5 +1,6 @@
 from sly import Parser
 from tetlexer import tetLexer
+import pickle
 
 class tetParser(Parser):
 
@@ -137,12 +138,12 @@ class tetParser(Parser):
 	@_('number_list COMMA NUM')
 	def number_list(self,p):
 		num_list = p.number_list
-		num_list.append(p.NUM)
+		num_list.append(int(p.NUM))
 		return num_list
 
 	@_('NUM')
 	def number_list(self,p):
-		return [p.NUM]
+		return [int(p.NUM)]
 
 	@_('PCS ASSIGN OPEN_BRACKET piece_list CLOSE_BRACKET')
 	def pieces_set(self,p):
@@ -185,17 +186,9 @@ if __name__ == '__main__':
 	
  
 	with open('tet_conf.tads', 'r') as fileh:
-		text = fileh.read()
-		# for tok in lexer.tokenize(text):
-		# 	print('type=%r, value=%r' % (tok.type, tok.value))
-		# print(text)
-		
-		# for tok in lexer.tokenize(data):
-		#	 print('\tt<%r>,%r' % (tok.type, tok.value))
-	
-		# text = input('> ')
-		# try:
-		result = parser.parse(lexer.tokenize(text))
+		lines = fileh.readlines()
+		for line in lines:
+			result = parser.parse(lexer.tokenize(line))
 		# print(result)
 		print(parser.data_map)
 				
