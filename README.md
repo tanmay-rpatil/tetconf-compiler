@@ -41,6 +41,7 @@
 ### Test Cases
 
 Test cases for parser are mentioned in `./tests/parser_test_cases.md` file. Details of the reasons and Input/Outputs for the same. 
+
 ---
 
 ### Makefile
@@ -52,6 +53,7 @@ $ make file=tetconf.tads
 ```
 
 This will interpret the `.tads` file and start the executable tetris game.
+
 ---
 ---
 
