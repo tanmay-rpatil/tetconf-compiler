@@ -110,7 +110,7 @@ class tetParser(Parser):
 	@_('board_set')
 	def array_assign(self,p):
 		dims = p.board_set
-		if(len(dims)>2):
+		if(len(dims)!=2):
 			print("\nAt max 2 dimention can be specified")
 			raise Exception('Dims cannot have more than 2 elements')
 		self.data_map["rows"] = dims[0]
@@ -198,7 +198,7 @@ class tetParser(Parser):
 		elif(p.string not in self.valid_pieces):
 			print("\nInvalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
 			raise Exception("Bracketing error")
-			
+
 		color_hex = str(p.COLOR)
 		color_hex_int = []
 		for ch in color_hex:

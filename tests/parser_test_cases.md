@@ -40,7 +40,7 @@ pieces L and I are set successfuly to the given colors
 
 # Testing arrays
 
-Arrays present a challenge to the parser, as there are these variations possible:
+Arrays present a challenge to the parser, as there are many variations and errors possible:
 
 IP
 
@@ -50,6 +50,8 @@ scoring = [0, 40]; //scoring upto 2 levels is set, above which defaults are take
 pieces = [{"L",#FFFFFF}, {"I",#111111}]; //L and I pieces are allowed and colored
 pieces = []; //default pieces
 scoring = [1,"a"] 
+board = {]
+pieces = [{"L",#FFFFFF]];
 ```
 
 OP
@@ -59,16 +61,21 @@ OP
 - scoring upto 2 levels is set, above which defaults are taken
 - L and I pieces are allowed and colored
 - Default pieces are set
-- Scoring is not set. Only integers are allowed 
+- Syntax error, Scoring is not set. Only integers are allowed 
+- Syntax error, as both should be square brackets
+- Syntax error, as both should be curly brackets
 ```
 
-# Misc Tests
+# Test keybinding and valid pieces
+
+Keybindings should match pygame keybindings.
+Valid pieces set is:  'L','I','O','J','Z','S','T'
 
 IP
 
 ```
-[{"L",#ffffff}];
-ghost = on;
+rotate = "K_UP";
+rotate = "K_INVALIDKEYNAME";
 ```
 
 OP
