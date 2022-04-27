@@ -178,7 +178,7 @@ class tetParser(Parser):
 	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
 		color_hex = str(p.COLOR)
-		color_hex_int = []2
+		color_hex_int = []
 		for ch in color_hex:
 			if ord('0') <= ord(ch) <= ord('9'):
 				color_hex_int.append(ord(ch)-ord('0'))
@@ -211,4 +211,10 @@ if __name__ == '__main__':
 			line_count+=1
 		# print(result)
 		print(parser.data_map)
+		outfile = open('data_map.pkl','wb')
+		try:
+			pickle.dump(parser.data_map, outfile)
+		except:
+			print("error in pickle")
+
 				
