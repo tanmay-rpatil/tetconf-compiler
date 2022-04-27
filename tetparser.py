@@ -196,4 +196,9 @@ if __name__ == '__main__':
 			line_count+=1
 		# print(result)
 		print(parser.data_map)
+		outfile = open('data_map.pkl','wb')
+		try:
+			pickle.dump(parser.data_map, outfile)
+		except:
+			print("error in pickle")
 				
