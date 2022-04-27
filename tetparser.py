@@ -127,13 +127,33 @@ class tetParser(Parser):
 		print("array_var: ", "pieces_set")
 		return p
 
-	@_('DIMS ASSIGN OPEN_BRACKET number_list CLOSE_BRACKET')
+	@_('DIMS ASSIGN object_array')
 	def board_set(self,p):
+		return p.object_array
+
+	@_('SCORING ASSIGN object_array')
+	def scoring_set(self,p):
+		return p.object_array
+
+	@_('PCS ASSIGN object_array')
+	def pieces_set(self,p):
+		return p.object_array
+
+	@_('OPEN_BRACKET object_list CLOSE_BRACKET')
+	def object_array(self,p):
+		return p.object_list
+
+	@_('OPEN_BRACKET CLOSE_BRACKET')
+	def object_array(self,p):
+		return []
+
+	@_('number_list')
+	def object_list(self,p):
 		return p.number_list
 
-	@_('SCORING ASSIGN OPEN_BRACKET number_list CLOSE_BRACKET')
-	def scoring_set(self,p):
-		return p.number_list
+	@_('piece_list')
+	def object_list(self,p):
+		return p.piece_list
 
 	@_('number_list COMMA NUM')
 	def number_list(self,p):
@@ -144,11 +164,6 @@ class tetParser(Parser):
 	@_('NUM')
 	def number_list(self,p):
 		return [int(p.NUM)]
-
-	@_('PCS ASSIGN OPEN_BRACKET piece_list CLOSE_BRACKET')
-	def pieces_set(self,p):
-
-		return p.piece_list
 
 	@_('piece_list COMMA tuples')
 	def piece_list(self,p):
@@ -163,7 +178,7 @@ class tetParser(Parser):
 	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
 		color_hex = str(p.COLOR)
-		color_hex_int = []
+		color_hex_int = []2
 		for ch in color_hex:
 			if ord('0') <= ord(ch) <= ord('9'):
 				color_hex_int.append(ord(ch)-ord('0'))
@@ -196,9 +211,4 @@ if __name__ == '__main__':
 			line_count+=1
 		# print(result)
 		print(parser.data_map)
-		outfile = open('data_map.pkl','wb')
-		try:
-			pickle.dump(parser.data_map, outfile)
-		except:
-			print("error in pickle")
 				
