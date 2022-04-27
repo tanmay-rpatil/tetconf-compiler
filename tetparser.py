@@ -6,6 +6,7 @@ class tetParser(Parser):
 
 	cnt = 1
 	data_map = dict()
+	valid_pieces = ['L','I','O','J','Z','S','T']
 
 	tokens = tetLexer.tokens
 
@@ -53,7 +54,7 @@ class tetParser(Parser):
 	@_('bool_var ASSIGN BOOL')
 	def bool_assign(self,p):
 		self.data_map[p.bool_var] = (p.BOOL == "ON")
-		print("bool_var: ", p.bool_var)
+		# print("bool_var: ", p.bool_var)
 		return p
 
 	@_('SOUND')
@@ -77,7 +78,7 @@ class tetParser(Parser):
 	@_('num_var ASSIGN NUM')
 	def num_assign(self,p):
 		self.data_map[p.num_var] = int(p.NUM)
-		print("num_var: ", p.num_var)
+		# print("num_var: ", p.num_var)
 		return p
 
 	@_('SPEED')
@@ -89,7 +90,7 @@ class tetParser(Parser):
 	@_('str_var ASSIGN string')
 	def str_assign(self,p):
 		self.data_map[p.str_var] = p.string
-		print("str_var: ", p.str_var)
+		# print("str_var: ", p.str_var)
 		return p
 
 	@_('K_KEY')
@@ -109,22 +110,31 @@ class tetParser(Parser):
 	@_('board_set')
 	def array_assign(self,p):
 		dims = p.board_set
+		if(len(dims)>2):
+			print("\nAt max 2 dimention can be specified")
+			raise Exception('Dims cannot have more than 2 elements')
 		self.data_map["rows"] = dims[0]
 		self.data_map["cols"] = dims[1]
-		print("array_var: ", "board_set")
+		# print("array_var: ", "board_set")
 		return p
 
 	@_('scoring_set')
 	def array_assign(self,p):
+		if(len(p.scoring_set)>5):
+			print("\nAt max 5 scoring levels can be specified")
+			raise Exception('Dims cannot have more than 2 elements')
 		self.data_map["points"] = p.scoring_set
-		print("array_var: ", "scoring_set")
+		# print("array_var: ", "scoring_set")
 		return p
 
 	@_('pieces_set')
 	def array_assign(self,p):
+		if(len(p.scoring_set)>7):
+			print("\nAt max 5 scoring levels can be specified")
+			raise Exception('Dims cannot have more than 2 elements')
 		for pc_spec in p.pieces_set:
 			self.data_map[pc_spec[0]] = pc_spec
-		print("array_var: ", "pieces_set")
+		# print("array_var: ", "pieces_set")
 		return p
 
 	@_('DIMS ASSIGN object_array')
@@ -141,6 +151,9 @@ class tetParser(Parser):
 
 	@_('OPEN_BRACKET object_list CLOSE_BRACKET')
 	def object_array(self,p):
+		if((p.OPEN_BRACKET != '[') or (p.CLOSE_BRACKET != ']')):
+			print("\nInvalid bracketing. '[' or ']' should be used for arrays, wrt the following error:")
+			raise Exception("Bracketing error")
 		return p.object_list
 
 	@_('OPEN_BRACKET CLOSE_BRACKET')
@@ -177,6 +190,15 @@ class tetParser(Parser):
 
 	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
+		
+		if((p.OPEN_BRACKET != '{') or (p.CLOSE_BRACKET != '}')):
+			print("\nInvalid bracketing. '{' or '}' should be used for tuples, wrt the following error:")
+			raise Exception("Bracketing error")
+
+		elif(p.string not in self.valid_pieces):
+			print("\nInvalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
+			raise Exception("Bracketing error")
+			
 		color_hex = str(p.COLOR)
 		color_hex_int = []
 		for ch in color_hex:
@@ -210,7 +232,7 @@ if __name__ == '__main__':
 				print("Syntax error in line #",line_count,":",line, "skipping this line")
 			line_count+=1
 		# print(result)
-		print(parser.data_map)
+		print("\nParsed")
 		outfile = open('data_map.pkl','wb')
 		try:
 			pickle.dump(parser.data_map, outfile)
