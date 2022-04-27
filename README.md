@@ -1,9 +1,53 @@
-# Tetris design in TADS Language
+# Tetris Design in TADS Language
 
 ---
 
-# Top Level Design Doc
+## STAGE 2
+## Parser Design
 
+- The interpreter translates from the TADS configuration language to a Python dictionary.
+  The dictionary is used to set game specifications in the game engine.
+- SLY has been used to design the scanner and parser.
+  It follows LR Parsing, so does our designed parser.
+- The parser performs the following:
+  - Saves the configuration parameters into a Python dictionary as specified the programmer
+  - Converts NUM string to int
+  - Converts "piece_type - COLOR" pair to Python-interpretable tuple
+  - Converts lists of numbers or tuples to Python-interpretable lists
+  - Converts Hex code of COLOR to a length 3 list representing the RGB values
+  - Converts ON/OFF bool types to 1/0 respectively
+  - Counts the number of lines in the code that assist in indicating errors in the code
+  - Error handling as described in "Challenges in Parser Design"
+  
+---
+
+### Syntax Directed Translation Scheme
+
+---
+
+### Challenges in Parser Design
+
+- Shift-reduce conflicts: Resolved by making the grammar unambiguous
+- Manual Error Handling:
+  - Check balanced bracketing
+  - Check list size that are being assigned as values of DIMS, SCORING and PIECES
+  - Validate types of Pieces set
+  - Validate key bindings
+
+---
+
+### Test Cases
+
+---
+
+### MAKE File
+python tetparser.py
+
+---
+---
+
+## STAGE 1
+## Scanner Design
 ---
 
 ## TADS Program Structure
@@ -22,7 +66,6 @@ The TADS language is a declarative language, that specifies how a tetris game ne
   Semicolon denotes the end of statement.
   Syntax example:
 
-
   ```
   sound = ON;
   ```
@@ -30,7 +73,6 @@ The TADS language is a declarative language, that specifies how a tetris game ne
 
   Delimiter
   Syntax example:
-
 
   ```
   pieces = [{"L", #008080}, {"I", #808080}, {"O", #800080}];
@@ -48,35 +90,76 @@ The TADS language is a declarative language, that specifies how a tetris game ne
 
   Can only include alphabets (any case), underscores, digits, spaces and tabs.
   Strings are enclosed within double quotes `"` only.
+  
   Syntax example:
 
 
   ```
   "A Str_ing  123"
   ```
+
 - #### Booleans (BOOL)
 
   **ON** represents _true_, and **OFF** represents _false_
+  
   Syntax example:
 
-git 
   ```
   ghost = ON;
   ```
+
 - #### Comments (COMMENT)
 
   Single line or in-line comments:
   All characters following a `//` till end of the line is treated as a comment and hence ignored.
+  
   Syntax example:
-
 
   ```
   sound = ON;      // This is an in-line comment
   ```
+
+- #### Colour (COLOR)
+
+  Hex code of length 6 represents colour.
+  The hex code is followed by a '#' and consists of 0-9, a-z and A-Z characters.
+
+  Syntax example:
+
+  ```
+  pieces = [{"T", #a4bE89}];
+  ```
+
 - #### End of Line (EOL)
 
   EOL is identified only to count the line number on which a segment of code is written. This is for help in throwing errors.
   `EOL: '\n'`
+
+- #### Brackets (OPEN_BRACKET / CLOSE_BRACKET)
+
+  - Opening Brackets: `(`, `{` and `[`
+  - Closing Brackets: `)`, `}` and `]`
+
+- #### Arithmetic Operations (ARITHOP, ASSIGN, RELOP)
+
+  The operations recognised as arithmetic operations:
+  - Add: `+`
+  - Subtract: `-`
+  - Multiply: `*`
+  - Divide: `/`
+
+- #### Assignment Operation (ASSIGN)
+
+  - Assignment: `=`
+
+- #### Relational Operations (RELOP)
+
+  The operations recognised as relational operations
+  - Less than: `<`
+  - Greater than `>`
+  - Less than or equal to: `<=`
+  - Greater than or equal to: `>=`
+  - Not equal to: `<>`
 
 ---
 
@@ -100,12 +183,11 @@ git
     The Sound configurations can be toggled on or off. 0 for off, 1 for on.
     Syntax example:
 
+    ```
+    sound = ON;
+    ```
 
-    ```
-    sound = 1;
-    ```
 - ### Pieces (PCS)
-
 
   - We use `I`, `O`, `T`, `L`, `J`, `S`, `Z` as default tetrominoes, with each type having specified default colors.
   - Pieces can be selected by the programmer from the default tetrominoes in the following format:
@@ -121,6 +203,7 @@ git
   - If programmer does not define pieces or defines `pieces = [];` then the default 7 are set with default colors.
   - If a color field is left blank then a default color is applied to it.
     Example: `pieces=[{"L",}];`
+
 - ### Key Bindings (K_KEY)
 
   The actions which are available are:
@@ -149,11 +232,11 @@ git
     Speed can be set to to an integer level from 1 to 10 inclusive.
     Syntax example,
 
-
     ```
     speed = 5;
     ```
-  - #### Bias (BIAS)
+
+  - #### Piece Generation Algorithm Bias (PGA_BIAS)
 
     The bias of the **piece generation algorithm** can be toggled on or off:
 
@@ -164,7 +247,8 @@ git
       ```
       pga_bias = ON;
       ```
-  - #### Disco mode (DISCO)
+  
+  - #### Disco mode (DISCO_MODE)
 
     Disco mode can be toggled on or off:
 
@@ -177,37 +261,41 @@ git
     ```
     disco_mode = OFF;
     ```
-  - #### Ghost mode (GHOST)
+  - #### Ghost mode (GHOST_MODE)
 
     Ghost piece is the predicted position of the block in motion if it is dropped in its current column. It can be toggled **ON** or **OFF**.
+    
     Syntax example,
-
 
     ```
     ghost_mode = ON;
     ```
-- ### Scoring Levels (SCORE)
+
+- ### Scoring Levels (SCORING)
 
   The `scoring` is assigned as a list of integer values. The i$^{th}$ value of points are awarded for clearing i rows.
 
+  Syntax example,
 
   ```
   scoring = [0, 40, 100, 300, 1200];
   ```
-- ### Welcome message (WELCOME)
+
+- ### Welcome message (OPENING_MSG)
 
   The text that is displayed when the game is launched.
+  
   Syntax Example:
-
 
   ```
   opening_msg = "Welcome! Press any key to begin.";
   ```
-- ### Ending message (GAMEOVER)
+
+- ### Ending message (ENDING_MSG)
 
   The text that is displayed when the game ends.
+  
   Syntax Example:
-
 
   ```
   closing_msg = "Game over!";
