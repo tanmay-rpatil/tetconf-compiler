@@ -81,7 +81,6 @@ rotate = "K_INVALIDKEYNAME";
 OP
 
 ```
-<OPEN_SQUARE> <OPEN_CURLY><STRING,"L"><COMMA><COLOR,#FFFFFF><NUMBER,0><CLOSE_CURLY> <CLOSE_SQUARE> <EOS>
-
-<GHOST><RELOP,EQ><BOOL,1><EOS>
+- First keybinding works, sets up arrow 
+- Second key binding is invalid as it is not a key in pygame
 ```
