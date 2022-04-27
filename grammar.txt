@@ -1,7 +1,5 @@
 expr_list       : expr_list expr | expr
 
-________________________________________________________________________________________________
-
 expr            : assign_expr EOS | EOL | COMMENT
 
 ________________________________________________________________________________________________
@@ -46,7 +44,7 @@ object_list     : number_list | piece_list
 number_list     : number_list COMMA NUM 
                 | NUM
 
-piece_list      : piece_list COMMA tupple 
-                | tupple
+piece_list      : piece_list COMMA tuples 
+                | tuples
 
-tupple          : OPEN_BRACKET STR COMMA COLOR CLOSE_BRACKET
+tuples          : OPEN_BRACKET STR COMMA COLOR CLOSE_BRACKET
