@@ -18,10 +18,12 @@
   - Converts ON/OFF bool types to 1/0 respectively
   - Counts the number of lines in the code that assist in indicating errors in the code
   - Error handling as described in "Challenges in Parser Design"
-  
+
 ---
 
 ### Syntax Directed Translation Scheme
+
+![](assets/LR.svg)
 
 ---
 
