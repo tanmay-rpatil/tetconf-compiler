@@ -1,6 +1,6 @@
 from sly import Parser
 from tetlexer import tetLexer
-import pickle
+import pickle, sys
 
 class tetParser(Parser):
 
@@ -8,6 +8,7 @@ class tetParser(Parser):
 	data_map = dict()
 	valid_pieces = ['L','I','O','J','Z','S','T']
 	valid_key_bindings = ['K_BACKSPACE', 'K_TAB', 'K_CLEAR', 'K_RETURN', 'K_PAUSE', 'K_ESCAPE', 'K_SPACE', 'K_EXCLAIM', 'K_QUOTEDBL', 'K_HASH', 'K_DOLLAR', 'K_AMPERSAND', 'K_QUOTE', 'K_LEFTPAREN', 'K_RIGHTPAREN', 'K_ASTERISK', 'K_PLUS', 'K_COMMA', 'K_MINUS', 'K_PERIOD', 'K_SLASH', 'K_0', 'K_1', 'K_2', 'K_3', 'K_4', 'K_5', 'K_6', 'K_7', 'K_8', 'K_9', 'K_COLON', 'K_SEMICOLON', 'K_LESS', 'K_EQUALS', 'K_GREATER', 'K_QUESTION', 'K_AT', 'K_LEFTBRACKET', 'K_BACKSLASH', 'K_RIGHTBRACKET', 'K_CARET', 'K_UNDERSCORE', 'K_BACKQ', 'K_a', 'K_b', 'K_c', 'K_d', 'K_e', 'K_f', 'K_g', 'K_h', 'K_i', 'K_j', 'K_k', 'K_l', 'K_m', 'K_n', 'K_o', 'K_p', 'K_q', 'K_r', 'K_s', 'K_t', 'K_u', 'K_v', 'K_w', 'K_x', 'K_y', 'K_z', 'K_DELETE', 'K_KP0', 'K_KP1', 'K_KP', 'K_KP3', 'K_KP4', 'K_KP5', 'K_KP6', 'K_KP7', 'K_KP8', 'K_KP9', 'K_KP_PERIOD', 'K_KP_DIVIDE', 'K_KP_MULTIPLY', 'K_KP_MINUS', 'K_KP_PLUS', 'K_KP_ENTER', 'K_KP_EQUALS', 'K_UP', 'K_DOWN', 'K_RIGHT', 'K_LEFT', 'K_INSERT', 'K_HOME', 'K_END', 'K_PAGEUP', 'K_PAGEDOWN', 'K_F1', 'K_F2', 'K_F3', 'K_F4', 'K_F5', 'K_F6', 'K_F7', 'K_F8', 'K_F9', 'K_F10', 'K_F11', 'K_F12', 'K_F13', 'K_F14', 'K_F15', 'K_NUMLOCK', 'K_CAPSLOCK', 'K_SCROLLOCK', 'K_RSHIFT', 'K_LSHIFT', 'K_RCTRL', 'K_LCTRL', 'K_RALT', 'K_LALT', 'K_RMETA', 'K_LMETA', 'K_LSUPER', 'K_RSUPER', 'K_MODE', 'K_HELP', 'K_PRINT', 'K_SYSRE', 'K_BREAK', 'K_MENU', 'K_POWER', 'K_AC_BACK']
+	keys_list = ['rotate','go_left','go_right','soft_drop','hard_drop','pause']
 
 	tokens = tetLexer.tokens
 
@@ -90,9 +91,9 @@ class tetParser(Parser):
 
 	@_('str_var ASSIGN string')
 	def str_assign(self,p):
-		if(p.string not in self.valid_key_bindings):
-			print("\nInvalid key binding: ", p.string, "\nRefer https://www.pygame.org/docs/ref/key.html to check valid key bindings.\n")
-			raise Exception("Bracketing error")
+		if(p.string not in self.valid_key_bindings) and (p.str_var in self.keys_list):
+			print("\n[syntax error]Invalid key binding: ", p.string, "\nRefer https://www.pygame.org/docs/ref/key.html to check valid key bindings.\n")
+			raise Exception("Key spec error")
 		self.data_map[p.str_var] = p.string
 		# print("str_var: ", p.str_var)
 		return p
@@ -115,7 +116,7 @@ class tetParser(Parser):
 	def array_assign(self,p):
 		dims = p.board_set
 		if(len(dims)!=2):
-			print("\nAt max 2 dimention can be specified")
+			print("\n[syntax error] At max 2 dimention can be specified")
 			raise Exception('Dims cannot have more than 2 elements')
 		self.data_map["rows"] = dims[0]
 		self.data_map["cols"] = dims[1]
@@ -125,7 +126,7 @@ class tetParser(Parser):
 	@_('scoring_set')
 	def array_assign(self,p):
 		if(len(p.scoring_set)>5):
-			print("\nAt max 5 scoring levels can be specified")
+			print("\n[syntax error] At max 5 scoring levels can be specified")
 			raise Exception('Dims cannot have more than 2 elements')
 		self.data_map["points"] = p.scoring_set
 		# print("array_var: ", "scoring_set")
@@ -134,7 +135,7 @@ class tetParser(Parser):
 	@_('pieces_set')
 	def array_assign(self,p):
 		if(len(p.scoring_set)>7):
-			print("\nAt max 5 scoring levels can be specified")
+			print("\n[syntax error] At max 7 pieces can be specified")
 			raise Exception('Dims cannot have more than 2 elements')
 		for pc_spec in p.pieces_set:
 			self.data_map[pc_spec[0]] = pc_spec
@@ -156,7 +157,7 @@ class tetParser(Parser):
 	@_('OPEN_BRACKET object_list CLOSE_BRACKET')
 	def object_array(self,p):
 		if((p.OPEN_BRACKET != '[') or (p.CLOSE_BRACKET != ']')):
-			print("\nInvalid bracketing. '[' or ']' should be used for arrays, wrt the following error:")
+			print("\n[syntax error] Invalid bracketing. '[' or ']' should be used for arrays, wrt the following error:")
 			raise Exception("Bracketing error")
 		return p.object_list
 
@@ -195,13 +196,13 @@ class tetParser(Parser):
 	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
 		
-		if((p.OPEN_BRACKET != '{') or (p.CLOSE_BRACKET != '}')):
-			print("\nInvalid bracketing. '{' or '}' should be used for tuples, wrt the following error:")
-			raise Exception("Bracketing error")
+		# if((p.OPEN_BRACKET != '{') or (p.CLOSE_BRACKET != '}')):
+		# 	print("\n[syntax error] Invalid bracketing. '{' or '}' should be used for tuples, wrt the following error:")
+		# 	raise Exception("Bracketing error")
 
-		elif(p.string not in self.valid_pieces):
-			print("\nInvalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
-			raise Exception("Bracketing error")
+		# elif(p.string not in self.valid_pieces):
+		# 	print("\n[syntax error] Invalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
+		# 	raise Exception("Bracketing error")
 
 		color_hex = str(p.COLOR)
 		color_hex_int = []
@@ -225,22 +226,37 @@ class tetParser(Parser):
 if __name__ == '__main__':
 	lexer = tetLexer()
 	parser = tetParser()
+	num_args = len(sys.argv)
 
-	with open('tet_conf.tads', 'r') as fileh:
+	# check for cl args
+	if(num_args>=2):
+		fname = sys.argv[1]
+	else:
+		print("[error] no filename provided")
+		exit(1)
+	# check if file exists
+	try:
+		fh = open(fname,'r')
+	except:
+		print("[error] in opening file:",fname)
+		exit(1)
+	fh.close()
+
+	with open(fname, 'r') as fileh:
 		lines = fileh.readlines()
 		line_count = 1;
 		for line in lines:
 			try:
 				result = parser.parse(lexer.tokenize(line))
 			except:
-				print("Syntax error in line #",line_count,":",line, "skipping this line")
+				print("[syntax error] in line #",line_count,":",line, "skipping this line")
 			line_count+=1
 		# print(result)
-		print("\nParsed")
+		print("\n[success] Parsed")
 		outfile = open('data_map.pkl','wb')
 		try:
 			pickle.dump(parser.data_map, outfile)
 		except:
-			print("error in pickle")
+			print("[error] in pickle")
 
 				
