@@ -134,7 +134,7 @@ class tetParser(Parser):
 
 	@_('pieces_set')
 	def array_assign(self,p):
-		if(len(p.scoring_set)>7):
+		if(len(p.pieces_set)>7):
 			print("\n[syntax error] At max 7 pieces can be specified")
 			raise Exception('Dims cannot have more than 2 elements')
 		for pc_spec in p.pieces_set:
@@ -196,13 +196,13 @@ class tetParser(Parser):
 	@_('OPEN_BRACKET string COMMA COLOR CLOSE_BRACKET')
 	def tuples(self,p):
 		
-		# if((p.OPEN_BRACKET != '{') or (p.CLOSE_BRACKET != '}')):
-		# 	print("\n[syntax error] Invalid bracketing. '{' or '}' should be used for tuples, wrt the following error:")
-		# 	raise Exception("Bracketing error")
+		if((p.OPEN_BRACKET != '{') or (p.CLOSE_BRACKET != '}')):
+			print("\n[syntax error] Invalid bracketing. '{' or '}' should be used for tuples, wrt the following error:")
+			raise Exception("Bracketing error")
 
-		# elif(p.string not in self.valid_pieces):
-		# 	print("\n[syntax error] Invalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
-		# 	raise Exception("Bracketing error")
+		elif(p.string not in self.valid_pieces):
+			print("\n[syntax error] Invalid piece:",p.string,"valid pieces are:",self.valid_pieces, "wrt the following error:")
+			raise Exception("Bracketing error")
 
 		color_hex = str(p.COLOR)
 		color_hex_int = []
@@ -217,6 +217,7 @@ class tetParser(Parser):
 		color = (color_hex_int[0]*16 + color_hex_int[1],
 					color_hex_int[2]*16 + color_hex_int[3],
 					color_hex_int[4]*16 + color_hex_int[5])
+		# print(color)
 		return (p.string, color)
 
 	@_('STR')
@@ -251,7 +252,7 @@ if __name__ == '__main__':
 			except:
 				print("[syntax error] in line #",line_count,":",line, "skipping this line")
 			line_count+=1
-		# print(result)
+		print(parser.data_map)
 		print("\n[success] Parsed")
 		outfile = open('data_map.pkl','wb')
 		try:
